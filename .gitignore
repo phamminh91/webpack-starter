@@ -1,0 +1,16 @@
+# IDE and editor
+.idea/
+.vscode/
+
+# OS temp files
+.DS_Store
+
+# Project specific
+.happypack/
+.webpack-path-record
+dist
+
+# NodeJS and Yarn
+node_modules/
+npm-debug.log
+yarn-error.log
