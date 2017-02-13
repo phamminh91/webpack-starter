@@ -1,0 +1,11 @@
+html {
+  background: white;
+}
+
+a {
+  color: red;
+
+  &__b {
+    color: blue;
+  }
+}

@@ -1,0 +1,12 @@
+[ignore]
+
+[include]
+./app/
+
+[libs]
+flow-typed/.*
+
+[options]
+suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
+module.name_mapper='^app\/\(.*\)$' -> '<PROJECT_ROOT>/app/\1'
+
