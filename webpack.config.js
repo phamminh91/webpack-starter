@@ -40,7 +40,7 @@ const baseConfig = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         use: 'happypack/loader?id=js',
         include: [
           path.resolve(__dirname, 'app'),
@@ -51,6 +51,10 @@ const baseConfig = {
   },
 
   resolve: {
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat',
+    },
     extensions: ['.js', '.json', '.jsx'],
     modules: [
       path.resolve('./'),
