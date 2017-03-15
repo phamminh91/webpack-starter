@@ -51,6 +51,10 @@ const baseConfig = {
   },
 
   resolve: {
+    alias: {
+      'react': 'react-lite',
+      'react-dom': 'react-lite',
+    },
     extensions: ['.js', '.json', '.jsx'],
     modules: [
       path.resolve('./'),

@@ -14,7 +14,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "react-lite": "^0.15.33"
+  },
   "ignoreFromVendor": [],
   "devDependencies": {
     "babel-core": "^6.24.0",
