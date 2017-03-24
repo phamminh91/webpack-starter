@@ -71,184 +71,188 @@ const baseConfig = {
   bail: true,
 };
 
-module.exports = function(env) {
-  if (currentTarget === TARGET.DEV) {
-    return webpackMerge.smart(baseConfig, {
-      entry: {
-        app: [
-          'webpack-dev-server/client?http://localhost:3018',
-          'webpack/hot/only-dev-server',
-          './app/index.js',
-        ],
-      },
+function developmentConfig(env) {
+  return webpackMerge.smart(baseConfig, {
+    entry: {
+      app: [
+        'webpack-dev-server/client?http://localhost:3018',
+        'webpack/hot/only-dev-server',
+        './app/index.js',
+      ],
+    },
 
-      devServer: {
-        // enable HMR on the server
-        hot: true,
-        // match the output `publicPath`
-        publicPath: publicPath,
-      },
+    devServer: {
+      // enable HMR on the server
+      hot: true,
+      // match the output `publicPath`
+      publicPath: publicPath,
+    },
 
-      output: {
-        filename: 'app.js',
-        publicPath: publicPath,
-        chunkFilename: '[name].chunk.js',
-        sourceMapFilename: '[name].js.map',
-      },
+    output: {
+      filename: 'app.js',
+      publicPath: publicPath,
+      chunkFilename: '[name].chunk.js',
+      sourceMapFilename: '[name].js.map',
+    },
 
-      devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-eval-source-map',
 
-      module: {
-        rules: [{ test: /\.scss$/, use: 'happypack/loader?id=style' }],
-      },
+    module: {
+      rules: [{ test: /\.scss$/, use: 'happypack/loader?id=style' }],
+    },
 
-      plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new HappyPackPlugin({
-          id: 'style',
-          loaders: [
-            'style-loader',
-            'css-loader',
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: require('postcss-cssnext'),
-              },
+    plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
+      new HappyPackPlugin({
+        id: 'style',
+        loaders: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: require('postcss-cssnext'),
             },
-            'sass-loader',
-          ],
-        }),
-        new webpack.DllReferencePlugin({
-          context: '.',
-          manifest: require(path.resolve(
+          },
+          'sass-loader',
+        ],
+      }),
+      new webpack.DllReferencePlugin({
+        context: '.',
+        manifest: require(path.resolve(
             dllOutputPath,
             'vendor.manifest.json'
-          )),
-        }),
-      ],
-    });
-  }
+        )),
+      }),
+    ],
+  });
+}
 
-
-  else if (currentTarget === TARGET.PRODUCTION) {
-    return webpackMerge.smart(baseConfig, {
-      entry: {
-        vendor: getVendorDependencies(),
-      },
-      output: {
-        path: outputPath,
-        publicPath: publicPath,
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].app.[chunkhash].js',
-      },
-      module: {
-        rules: [
-          // sadly we cannot use happypack here as ExtractTextPlugin is not supported https://github.com/amireh/happypack/issues/12
-          {
-            test: /\.scss$/,
-            use: ExtractTextPlugin.extract({
-              use: [
-                {
-                  loader: 'css-loader',
-                  options: {
-                    sourceMap: true,
-                    minimize: true,
-                  },
+function productionConfig(env) {
+  return webpackMerge.smart(baseConfig, {
+    entry: {
+      vendor: getVendorDependencies(),
+    },
+    output: {
+      path: outputPath,
+      publicPath: publicPath,
+      filename: '[name].[chunkhash].js',
+      chunkFilename: '[name].app.[chunkhash].js',
+    },
+    module: {
+      rules: [
+        // sadly we cannot use happypack here as ExtractTextPlugin is not supported https://github.com/amireh/happypack/issues/12
+        {
+          test: /\.scss$/,
+          use: ExtractTextPlugin.extract({
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: true,
+                  minimize: true,
                 },
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    plugins: require('postcss-cssnext'),
-                  },
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  plugins: require('postcss-cssnext'),
                 },
-                'sass-loader',
-              ],
-            }),
-          },
-          { test: /\.hbs/, loader: 'handlebars-template-loader' },
-        ],
-      },
-      devtool: 'true', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
-      plugins: [
-        new V8LazyParseWebpackPlugin(),
-        new webpack.SourceMapDevToolPlugin({
-          filename: '[file].map',
-          append: '\n//# sourceMappingURL=' + rootDomain + '/assets/[url]',
-        }),
-        new ExtractTextPlugin('app.[contenthash].css'),
-        new webpack.optimize.CommonsChunkPlugin({
-          name: 'vendor',
-          filename: 'vendor.[chunkhash].js',
-        }),
-        // Separate webpack runtime from vendor. This stop vendor chunk from changing
-        // whenever the webpack runtime changes. (webpack runtime will change on every build)
-        // IMPORTANT: Manifest chunk need to be declared last to be extracted
-        new webpack.optimize.CommonsChunkPlugin({
-          name: 'manifest',
-          chunks: ['vendor'],
-          filename: 'manifest.js',
-        }),
-        new ParallelUglifyPlugin({
-          uglifyJS: {
-            compress: {
-              warnings: false,
-              conditionals: true,
-              unused: true,
-              comparisons: true,
-              sequences: true,
-              dead_code: true,
-              evaluate: true,
-              if_return: true,
-              join_vars: true,
-              negate_iife: false,
-            },
-            output: {
-              comments: false,
-            },
-          },
-        }),
-        new CleanWebpackPlugin([outputPath], {
-          verbose: true,
-          dry: false,
-        }),
-        new HtmlWebpackPlugin({
-          hash: false,
-          filename: './index.html',
-          template: './index.hbs',
-          inject: 'body',
-          chunksSortMode: 'dependency',
-        }),
-        new InlineManifestWebpackPlugin({
-          name: 'webpackManifest',
-        }),
-      ].concat(env.bundleStats ? [new BundleAnalyzerPlugin()] : []),
-      bail: true,
-      recordsPath: path.resolve(__dirname, '.webpack-path-record'),
-    });
-  }
-
-
-  else if (currentTarget === TARGET.DLL) {
-    return {
-      entry: {
-        vendor: getVendorDependencies(),
-      },
-      output: {
-        filename: 'vendor.js',
-        path: dllOutputPath,
-        library: 'vendor',
-      },
-      plugins: [
-        new webpack.DllPlugin({
-          name: 'vendor',
-          path: path.resolve(dllOutputPath, 'vendor.manifest.json'),
-        }),
+              },
+              'sass-loader',
+            ],
+          }),
+        },
+        { test: /\.hbs/, loader: 'handlebars-template-loader' },
       ],
-    };
-  }
+    },
+    devtool: 'true', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
+    plugins: [
+      new V8LazyParseWebpackPlugin(),
+      new webpack.SourceMapDevToolPlugin({
+        filename: '[file].map',
+        append: '\n//# sourceMappingURL=' + rootDomain + '/assets/[url]',
+      }),
+      new ExtractTextPlugin('app.[contenthash].css'),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: 'vendor.[chunkhash].js',
+      }),
+      // Separate webpack runtime from vendor. This stop vendor chunk from changing
+      // whenever the webpack runtime changes. (webpack runtime will change on every build)
+      // IMPORTANT: Manifest chunk need to be declared last to be extracted
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'manifest',
+        chunks: ['vendor'],
+        filename: 'manifest.js',
+      }),
+      new ParallelUglifyPlugin({
+        uglifyJS: {
+          compress: {
+            warnings: false,
+            conditionals: true,
+            unused: true,
+            comparisons: true,
+            sequences: true,
+            dead_code: true,
+            evaluate: true,
+            if_return: true,
+            join_vars: true,
+            negate_iife: false,
+          },
+          output: {
+            comments: false,
+          },
+        },
+      }),
+      new CleanWebpackPlugin([outputPath], {
+        verbose: true,
+        dry: false,
+      }),
+      new HtmlWebpackPlugin({
+        hash: false,
+        filename: './index.html',
+        template: './index.hbs',
+        inject: 'body',
+        chunksSortMode: 'dependency',
+      }),
+      new InlineManifestWebpackPlugin({
+        name: 'webpackManifest',
+      }),
+    ].concat(env.bundleStats ? [new BundleAnalyzerPlugin()] : []),
+    bail: true,
+    recordsPath: path.resolve(__dirname, '.webpack-path-record'),
+  });
+}
 
+function dllConfig(env) {
+  return {
+    entry: {
+      vendor: getVendorDependencies(),
+    },
+    output: {
+      filename: 'vendor.js',
+      path: dllOutputPath,
+      library: 'vendor',
+    },
+    plugins: [
+      new webpack.DllPlugin({
+        name: 'vendor',
+        path: path.resolve(dllOutputPath, 'vendor.manifest.json'),
+      }),
+    ],
+  };
+}
 
-  else
+module.exports = function(env) {
+  if (currentTarget === TARGET.DEV) {
+    return developmentConfig(env);
+  } else if (currentTarget === TARGET.PRODUCTION) {
+    return productionConfig(env);
+  } else if (currentTarget === TARGET.DLL) {
+    return dllConfig(env);
+  } else {
     return baseConfig;
+  }
 };

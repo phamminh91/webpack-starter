@@ -11,7 +11,7 @@
     "lint": "eslint --fix 'app/**'",
     "lint-stat": "eslint-nibble 'app/**'",
     "bundle-stat": "webpack --env.env=production --env.bundleStats=true",
-    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all ./app/**/*.js ./app/**/*.jsx"
+    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './app/**/*.{js,jsx,json}'"
   },
   "author": "",
   "license": "ISC",
