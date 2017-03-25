@@ -36,7 +36,7 @@ function getVendorDependencies() {
 
 const baseConfig = {
   entry: {
-    app: './app/index.js',
+    app: './src/index.js',
   },
 
   module: {
@@ -77,7 +77,7 @@ function developmentConfig(env) {
       app: [
         'webpack-dev-server/client?http://localhost:3018',
         'webpack/hot/only-dev-server',
-        './app/index.js',
+        './src/index.js',
       ],
     },
 
