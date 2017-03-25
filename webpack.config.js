@@ -35,35 +35,34 @@ function getVendorDependencies() {
 
 const baseConfig = {
   entry: {
-    app: './src/index.js',
+    app: "./src/index.tsx",
   },
 
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        use: 'happypack/loader?id=js',
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader",
         include: [
-          path.resolve(__dirname, 'src'),
-          path.resolve(__dirname, 'node_modules'),
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "node_modules"),
         ],
       },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
     ],
   },
 
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
-    modules: [path.resolve('./'), path.resolve('./node_modules')],
+    extensions: [".js", ".json", ".jsx", ".ts", ".tsx"],
+    modules: [path.resolve("./src"), path.resolve("./node_modules")],
   },
 
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false')),
-      'process.env.NODE_ENV': currentTarget === TARGET.DEV ? '"dev"' : '"production"',
-    }),
-    new HappyPackPlugin({
-      id: 'js',
-      loaders: ['babel-loader'],
+      __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || "false")),
+      "process.env.NODE_ENV": currentTarget === TARGET.DEV
+        ? '"dev"'
+        : '"production"',
     }),
   ],
 
@@ -74,9 +73,9 @@ function developmentConfig(env) {
   return webpackMerge.smart(baseConfig, {
     entry: {
       app: [
-        'webpack-dev-server/client?http://localhost:3018',
-        'webpack/hot/only-dev-server',
-        './src/index.js',
+        "webpack-dev-server/client?http://localhost:3018",
+        "webpack/hot/only-dev-server",
+        "./src/index.tsx",
       ],
     },
 
