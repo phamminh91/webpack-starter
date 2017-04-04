@@ -22,7 +22,7 @@ const server = new WebpackDevServer(compiler, {
     // interesting question is that why the webpack generate files are not affected?
     // my guess would be the webpack-dev-middlware kicks in earlier than the api fallback middleware, and is able to resolve correctly for built files in memory
     rewrites: [
-      {from: /vendor\.js/, to: '/dll/vendor.js'}
+      {from: /vendor\.js/, to: '/dist/vendor.js'}
     ],
     disableDotRule: true
   },

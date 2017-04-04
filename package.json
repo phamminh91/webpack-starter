@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build-dll && DEBUG=true node server.js",
+    "start": "npm run build:dll && DEBUG=true node server.js",
     "build": "webpack --env.env=production",
-    "build-dll": "webpack --progress",
+    "build:dll": "webpack --progress",
     "build:stat": "webpack --env.env=production --env.bundleStats=true",
     "lint": "eslint --ext .js,.jsx src/",
     "lint:stat": "eslint-nibble --ext .jsx,.js src/",
-    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './app/**/*.{js,jsx,json}'"
+    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'"
   },
   "author": "",
   "license": "ISC",

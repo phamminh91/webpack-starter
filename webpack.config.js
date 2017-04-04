@@ -18,11 +18,10 @@ const currentTarget = process.env.npm_lifecycle_event;
 const TARGET = {
   DEV: 'start',
   PRODUCTION: 'build',
-  DLL: 'build-dll',
+  DLL: 'build:dll',
 };
 const outputPath = path.resolve(__dirname, 'dist');
-const publicPath = '/assets/';
-const dllOutputPath = path.resolve(__dirname, 'dll');
+const publicPath = '/dist/';
 const rootDomain = '';
 
 /** vendors library **/
@@ -45,7 +44,7 @@ const baseConfig = {
         test: /\.jsx?$/,
         use: 'happypack/loader?id=js',
         include: [
-          path.resolve(__dirname, 'app'),
+          path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules'),
         ],
       },
@@ -120,10 +119,7 @@ function developmentConfig(env) {
       }),
       new webpack.DllReferencePlugin({
         context: '.',
-        manifest: require(path.resolve(
-            dllOutputPath,
-            'vendor.manifest.json'
-        )),
+        manifest: require(path.resolve(outputPath, 'vendor.manifest.json')),
       }),
     ],
   });
@@ -172,7 +168,7 @@ function productionConfig(env) {
       new V8LazyParseWebpackPlugin(),
       new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
-        append: '\n//# sourceMappingURL=' + rootDomain + '/assets/[url]',
+        append: '\n//# sourceMappingURL=' + rootDomain + '/dist/[url]',
       }),
       new ExtractTextPlugin('app.[contenthash].css'),
       new webpack.optimize.CommonsChunkPlugin({
@@ -233,13 +229,13 @@ function dllConfig(env) {
     },
     output: {
       filename: 'vendor.js',
-      path: dllOutputPath,
+      path: outputPath,
       library: 'vendor',
     },
     plugins: [
       new webpack.DllPlugin({
         name: 'vendor',
-        path: path.resolve(dllOutputPath, 'vendor.manifest.json'),
+        path: path.resolve(outputPath, 'vendor.manifest.json'),
       }),
     ],
   };
