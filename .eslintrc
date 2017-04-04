@@ -26,7 +26,7 @@
     "default-case": "error",
     "eqeqeq": "error",
     "func-names": ["warn", "never"],
-    "max-len": ["warn", 200],
+    "max-len": ["warn", 80],
     "no-self-compare": "error",
     "no-underscore-dangle": [0, {
       "allow": []
