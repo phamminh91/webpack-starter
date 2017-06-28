@@ -10,7 +10,8 @@ module.exports = () => {
   return webpackMerge.smart(baseConfig, {
     entry: {
       app: [
-        'webpack-dev-server/client?http://localhost:3018',
+        'webpack-dev-server/client?http://localhost:' +
+          config.webpackDevServerPort,
         'webpack/hot/only-dev-server',
         './src/index.js',
       ],

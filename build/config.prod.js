@@ -16,11 +16,12 @@ const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const ReplacePlugin = require('webpack-plugin-replace');
 
 const vendorDeps = util.getVendorDependencies();
 
-module.exports = env => {
-  return webpackMerge.smart(baseConfig, {
+module.exports = env =>
+  webpackMerge.smart(baseConfig, {
     entry: vendorDeps.length > 0 ? { vendor: vendorDeps } : {},
     output: {
       path: config.outputPath,
@@ -83,19 +84,40 @@ module.exports = env => {
         chunks: ['vendor'],
         filename: 'manifest.js',
       }),
+      // strip out babel-helper invariant checks
+      new ReplacePlugin({
+        include: /babel-helper$/,
+        patterns: [
+          {
+            regex: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
+            value: s => `return;${Array(s.length - 7).join(' ')}(`,
+          },
+        ],
+      }),
       new ParallelUglifyPlugin({
         uglifyJS: {
+          mangle: true,
           compress: {
+            properties: true,
+            keep_fargs: false,
+            pure_getters: true,
+            collapse_vars: true,
             warnings: false,
-            conditionals: true,
-            unused: true,
-            comparisons: true,
+            screw_ie8: true,
             sequences: true,
             dead_code: true,
+            drop_debugger: true,
+            comparisons: true,
+            conditionals: true,
             evaluate: true,
+            booleans: true,
+            loops: true,
+            unused: true,
+            hoist_funs: true,
             if_return: true,
             join_vars: true,
-            negate_iife: false,
+            cascade: true,
+            drop_console: true,
           },
           output: {
             comments: false,
@@ -103,6 +125,7 @@ module.exports = env => {
         },
       }),
       new CleanWebpackPlugin([config.outputPath], {
+        root: path.resolve('..'),
         verbose: true,
         dry: false,
       }),
@@ -127,4 +150,3 @@ module.exports = env => {
     bail: true,
     recordsPath: path.resolve(__dirname, '..', '.webpack-path-record'),
   });
-};
