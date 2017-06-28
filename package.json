@@ -9,8 +9,9 @@
     "build": "webpack --env.env=production --config ./build/webpack.config.js",
     "build:dll": "webpack --progress --config ./build/webpack.config.js",
     "build:stat": "webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
-    "lint": "eslint --ext .js,.jsx src/",
-    "lint:stat": "eslint-nibble --ext .jsx,.js src/",
+    "lint:css": "stylelint src/**/*.scss --fix",
+    "lint:js": "eslint --ext .js,.jsx src/",
+    "lint:js-stat": "eslint-nibble --ext .jsx,.js src/",
     "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
     "precommit": "lint-staged"
   },
@@ -61,6 +62,7 @@
     "prettier": "^1.5.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
+    "stylelint": "^7.12.0",
     "v8-lazy-parse-webpack-plugin": "^0.3.0",
     "webpack": "^3.0.0",
     "webpack-bundle-analyzer": "^2.8.2",
@@ -74,6 +76,9 @@
       "prettier --single-quote --trailing-comma es5 --write",
       "eslint --fix --ext .js --ext .jsx",
       "git add"
+    ],
+    "*.{css,scss}": [
+      "prettier --write"
     ]
   }
 }

@@ -1,9 +1,10 @@
 html {
   background: white;
+  color: #AAAAAA;
 }
 
-a {
-  color: red;
+a, span {
+    color: red;
 
   &__b {
     color: blue;

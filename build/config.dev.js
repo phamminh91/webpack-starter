@@ -30,10 +30,12 @@ module.exports = () => {
       sourceMapFilename: '[name].js.map',
     },
 
-    devtool: 'source-map',
+    // we assume developer use Chrome in dev mode (which has good support for
+    // ES6 syntax hence there's no need for babel transpilation
+    // devtool: 'source-map',
 
     module: {
-      rules: [{ test: /\.scss$/, use: 'happypack/loader?id=style' }],
+      rules: [{ test: /\.s?css$/, use: 'happypack/loader?id=style' }],
     },
 
     plugins: [

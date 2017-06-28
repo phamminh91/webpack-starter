@@ -32,7 +32,7 @@ module.exports = env => {
       rules: [
         // sadly we cannot use happypack here as ExtractTextPlugin is not supported https://github.com/amireh/happypack/issues/12
         {
-          test: /\.scss$/,
+          test: /\.s?css$/,
           use: ExtractTextPlugin.extract({
             use: [
               {
