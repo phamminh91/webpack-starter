@@ -12,6 +12,8 @@
     "lint:css": "stylelint src/**/*.scss --fix",
     "lint:js": "eslint --ext .js,.jsx src/",
     "lint:js-stat": "eslint-nibble --ext .jsx,.js src/",
+    "lint:svg": "/bin/bash ./build/svglinter/svg_lint.sh",
+    "svg:clean": "/bin/bash ./build/svglinter/clean_svg_all.sh",
     "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
     "precommit": "lint-staged"
   },
@@ -20,6 +22,7 @@
   "dependencies": {},
   "ignoreFromVendor": [],
   "devDependencies": {
+    "autoprefixer": "^7.1.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
@@ -82,6 +85,10 @@
     "*.{css,scss}": [
       "prettier --write",
       "stylelint --fix",
+      "git add"
+    ],
+    "*.svg": [
+      "sh ./build/svglinter/clean_svg_precommit.sh",
       "git add"
     ]
   }
