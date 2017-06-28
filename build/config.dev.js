@@ -30,7 +30,7 @@ module.exports = () => {
       sourceMapFilename: '[name].js.map',
     },
 
-    // we assume developer use Chrome in dev mode (which has good support for
+    // we assume developer use Chrome in dev mode which has good support for
     // ES6 syntax hence there's no need for babel transpilation
     // devtool: 'source-map',
 
@@ -50,7 +50,7 @@ module.exports = () => {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: require('postcss-cssnext'),
+              plugins: [require('postcss-cssnext')],
             },
           },
           'sass-loader',
