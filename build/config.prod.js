@@ -16,6 +16,7 @@ const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const PrepackPlugin = require('prepack-webpack-plugin').default;
 
 const vendorDeps = util.getVendorDependencies();
 
@@ -57,6 +58,7 @@ module.exports = env => {
     },
     devtool: 'true', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
     plugins: [
+      new PrepackPlugin({}),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new V8LazyParseWebpackPlugin(),
       new webpack.SourceMapDevToolPlugin({
