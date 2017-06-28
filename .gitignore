@@ -1,6 +1,5 @@
 # IDE and editor
 .idea/
-.vscode/
 
 # OS temp files
 .DS_Store
