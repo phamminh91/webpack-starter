@@ -51,7 +51,7 @@ module.exports = () => {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [require('postcss-cssnext')],
+              plugins: require('postcss-cssnext'),
             },
           },
           'sass-loader',
