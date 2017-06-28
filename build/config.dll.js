@@ -3,9 +3,14 @@ const webpack = require('webpack');
 const util = require('./util');
 const config = require('./constant');
 
+const vendorDeps = util.getVendorDependencies();
+
 module.exports = () => ({
   entry: {
-    vendor: util.getVendorDependencies(),
+    vendor:
+      vendorDeps.length > 0
+        ? vendorDeps
+        : [path.resolve(__dirname, 'dummyEntry.js')],
   },
   output: {
     filename: 'vendor.js',

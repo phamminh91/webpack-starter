@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HappyPackPlugin = require('happypack');
 const config = require('./constant');
+const projectDir = config.projectDir;
 
 module.exports = {
   entry: {
@@ -14,19 +15,21 @@ module.exports = {
         test: /\.jsx?$/,
         use: 'happypack/loader?id=js',
         include: [
-          path.resolve(__dirname, '..', 'src'),
-          path.resolve(__dirname, '..', 'node_modules'),
+          path.resolve(projectDir, 'src'),
+          path.resolve(projectDir, 'node_modules'),
         ],
+      },
+      {
+        test: [/\.(png|jpg|gif|woff|woff2|eot|ttf)/],
+        use: 'file-loader',
+        include: [path.resolve(projectDir, 'src')],
       },
     ],
   },
 
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
-    modules: [
-      path.resolve(__dirname, '..'),
-      path.resolve(__dirname, '..', 'node_modules'),
-    ],
+    modules: [projectDir, path.resolve(projectDir, 'node_modules')],
   },
 
   plugins: [

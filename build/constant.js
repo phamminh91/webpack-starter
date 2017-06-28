@@ -9,4 +9,6 @@ module.exports = {
     PRODUCTION: 'build',
     DLL: 'build:dll',
   },
+  projectDir: path.resolve(__dirname, '..'),
+  webpackDevServerPort: 3018,
 };

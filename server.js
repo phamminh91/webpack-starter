@@ -3,6 +3,7 @@
 const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./build/webpack.config');
+const config = require('./build/constant');
 
 const compiler = Webpack(webpackConfig({}));
 
@@ -24,9 +25,10 @@ const server = new WebpackDevServer(compiler, {
     rewrites: [{ from: /vendor\.js/, to: '/dist/vendor.js' }],
     disableDotRule: true,
   },
+  quiet: true,
 });
 
-server.listen(3018, '127.0.0.1', function(err) {
+server.listen(config.webpackDevServerPort || 3018, '127.0.0.1', function(err) {
   // eslint-disable-next-line no-console
   if (err) console.log(err);
   // eslint-disable-next-line no-console

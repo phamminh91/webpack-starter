@@ -2,7 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const HappyPackPlugin = require('happypack');
-const baseConfig = require('./base');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const baseConfig = require('./config.base');
 const config = require('./constant');
 
 module.exports = () => {
@@ -36,6 +37,7 @@ module.exports = () => {
     },
 
     plugins: [
+      new FriendlyErrorsWebpackPlugin(),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new HappyPackPlugin({

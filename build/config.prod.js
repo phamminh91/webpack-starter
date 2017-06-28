@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
-const baseConfig = require('./base');
+const baseConfig = require('./config.base');
 const config = require('./constant');
 const util = require('./util');
 
@@ -15,6 +15,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 const vendorDeps = util.getVendorDependencies();
 
@@ -63,6 +64,13 @@ module.exports = env => {
         append: '\n//# sourceMappingURL=' + config.rootDomain + '/dist/[url]',
       }),
       new ExtractTextPlugin('app.[contenthash].css'),
+      // Compress extracted CSS. We are using this plugin so that possible
+      // duplicated CSS from different components can be deduped.
+      new OptimizeCSSPlugin({
+        cssProcessorOptions: {
+          safe: true,
+        },
+      }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         filename: 'vendor.[chunkhash].js',
@@ -103,6 +111,13 @@ module.exports = env => {
         filename: './index.html',
         template: './index.hbs',
         inject: 'body',
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: true,
+          // more options: https://github.com/kangax/html-minifier#options-quick-reference
+        },
+        // necessary to consistently work with multiple chunks via CommonsChunkPlugin
         chunksSortMode: 'dependency',
       }),
       new InlineManifestWebpackPlugin({
