@@ -3,7 +3,8 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 
 /** plugins **/
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -29,7 +30,8 @@ function getVendorDependencies() {
   const deps = Object.keys(require('./package.json').dependencies) || [];
   const ignoredDependencies = require('./package.json').ignoreFromVendor || [];
   return Array.prototype.filter.call(
-      deps, dep => ignoredDependencies.indexOf(dep) === -1
+    deps,
+    dep => ignoredDependencies.indexOf(dep) === -1
   );
 }
 
@@ -59,7 +61,8 @@ const baseConfig = {
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false')),
-      'process.env.NODE_ENV': currentTarget === TARGET.DEV ? '"dev"' : '"production"',
+      'process.env.NODE_ENV':
+        currentTarget === TARGET.DEV ? '"dev"' : '"production"',
     }),
     new HappyPackPlugin({
       id: 'js',
@@ -165,6 +168,7 @@ function productionConfig(env) {
     },
     devtool: 'true', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
     plugins: [
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new V8LazyParseWebpackPlugin(),
       new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
