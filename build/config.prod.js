@@ -26,8 +26,8 @@ module.exports = env =>
     output: {
       path: config.outputPath,
       publicPath: config.publicPath,
-      filename: '[name].[chunkhash].js',
-      chunkFilename: '[name].app.[chunkhash].js',
+      filename: '[name].[chunkhash:6].js',
+      chunkFilename: '[name].app.[chunkhash:6].js',
     },
     module: {
       rules: [
@@ -64,7 +64,7 @@ module.exports = env =>
         filename: '[file].map',
         append: '\n//# sourceMappingURL=' + config.rootDomain + '/dist/[url]',
       }),
-      new ExtractTextPlugin('app.[contenthash].css'),
+      new ExtractTextPlugin('app.[contenthash:6].css'),
       // Compress extracted CSS. We are using this plugin so that possible
       // duplicated CSS from different components can be deduped.
       new OptimizeCSSPlugin({
@@ -74,7 +74,7 @@ module.exports = env =>
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: 'vendor.[chunkhash].js',
+        filename: 'vendor.[chunkhash:6].js',
       }),
       // Separate webpack runtime from vendor. This stop vendor chunk from changing
       // whenever the webpack runtime changes. (webpack runtime will change on every build)
