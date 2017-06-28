@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const Webpack = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
-const webpackConfig = require("./webpack.config");
+const Webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const webpackConfig = require('./build/webpack.config');
 
 const compiler = Webpack(webpackConfig({}));
 
@@ -21,15 +21,14 @@ const server = new WebpackDevServer(compiler, {
     // this is not what we want, so we use the `rewrites` trick here to force the `connect-history-api-fallback` middleware to pass the correct url to next connect static middleware
     // interesting question is that why the webpack generate files are not affected?
     // my guess would be the webpack-dev-middlware kicks in earlier than the api fallback middleware, and is able to resolve correctly for built files in memory
-    rewrites: [
-      {from: /vendor\.js/, to: '/dist/vendor.js'}
-    ],
-    disableDotRule: true
+    rewrites: [{ from: /vendor\.js/, to: '/dist/vendor.js' }],
+    disableDotRule: true,
   },
 });
 
-server.listen(3018, "127.0.0.1", function(err) {
-  if (err)
-    console.log(err);
-  console.log("Starting server on http://localhost:3018");
+server.listen(3018, '127.0.0.1', function(err) {
+  // eslint-disable-next-line no-console
+  if (err) console.log(err);
+  // eslint-disable-next-line no-console
+  console.log('Starting server on http://localhost:3018');
 });

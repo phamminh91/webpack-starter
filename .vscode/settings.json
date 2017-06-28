@@ -1,0 +1,31 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "workbench.colorTheme": "Default Light+",
+  "vim.disableAnnoyingNeovimMessage": true,
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "all",
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.fontSize": 13,
+  "window.zoomLevel": 0,
+  "editor.rulers": [
+      79
+  ],
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "prettier.bracketSpacing": true,
+  "prettier.jsxBracketSameLine": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/.happypack": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.webpack-path-record": true
+  },
+  "javascript.validate.enable": false
+}
