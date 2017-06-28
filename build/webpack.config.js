@@ -9,7 +9,10 @@ const currentTarget = process.env.npm_lifecycle_event;
 module.exports = function(env) {
   if (currentTarget === TARGET.DEV) {
     return developmentConfig(env);
-  } else if (currentTarget === TARGET.PRODUCTION) {
+  } else if (
+    currentTarget === TARGET.PRODUCTION ||
+    currentTarget === TARGET.BUILD_STAT
+  ) {
     return productionConfig(env);
   } else if (currentTarget === TARGET.DLL) {
     return dllConfig(env);

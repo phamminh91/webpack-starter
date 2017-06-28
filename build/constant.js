@@ -8,6 +8,7 @@ module.exports = {
     DEV: 'start',
     PRODUCTION: 'build',
     DLL: 'build:dll',
+    BUILD_STAT: 'build:stat',
   },
   projectDir: path.resolve(__dirname, '..'),
   webpackDevServerPort: 3018,
