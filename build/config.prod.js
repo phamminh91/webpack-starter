@@ -147,6 +147,11 @@ module.exports = env =>
         name: 'webpackManifest',
       }),
     ].concat(env.bundleStats ? [new BundleAnalyzerPlugin()] : []),
+    performance: {
+      maxAssetSize: 100000,
+      maxEntrypointSize: 200000,
+      hints: 'warning',
+    },
     bail: true,
     recordsPath: path.resolve(__dirname, '..', '.webpack-path-record'),
   });
