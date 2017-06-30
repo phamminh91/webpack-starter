@@ -8,20 +8,24 @@
     "start": "npm run build:dll && DEBUG=true node server.js",
     "build": "webpack --env.env=production --config ./build/webpack.config.js",
     "build:dll": "webpack --progress --config ./build/webpack.config.js",
-    "build:stat":
-      "webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
+    "build:stat": "webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
     "lint:css": "stylelint src/**/*.scss --fix",
     "lint:js": "eslint --ext .js,.jsx src/",
     "lint:js-stat": "eslint-nibble --ext .jsx,.js src/",
     "lint:svg": "/bin/bash ./build/svglinter/svg_lint.sh",
     "svg:clean": "/bin/bash ./build/svglinter/clean_svg_all.sh",
-    "prettier":
-      "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
+    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
     "precommit": "lint-staged"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "preact": "^8.2.5",
+    "preact-redux": "^2.0.2",
+    "preact-router": "^2.5.7",
+    "redux": "^3.7.2",
+    "unfetch": "^3.0.0"
+  },
   "ignoreFromVendor": [],
   "devDependencies": {
     "autoprefixer": "^7.1.3",
@@ -30,9 +34,12 @@
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-node-env-inline": "^0.1.1",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.6",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
