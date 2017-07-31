@@ -1,6 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-  "workbench.colorTheme": "Default Light+",
+  "workbench.colorTheme": "Nord",
   "vim.disableAnnoyingNeovimMessage": true,
   "editor.tabSize": 2,
   "editor.renderWhitespace": "all",
@@ -24,8 +24,13 @@
     "**/.DS_Store": true,
     "**/.happypack": true,
     "**/node_modules": true,
-    "**/dist": true,
+    // "**/dist": true,
     "**/.webpack-path-record": true
   },
-  "javascript.validate.enable": false
+  "javascript.validate.enable": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+  }
 }

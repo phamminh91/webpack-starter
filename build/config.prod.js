@@ -19,7 +19,9 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ReplacePlugin = require('webpack-plugin-replace');
 
 const vendorDeps = util.getVendorDependencies();
-const hashLength = 6;
+const HASH_LENGTH = 6;
+const MAX_ASSET_SIZE_IN_BYTE = 100000;
+const MAX_ENTRY_SIZE_IN_BYTE = 200000;
 
 module.exports = env =>
   webpackMerge.smart(baseConfig, {
@@ -27,8 +29,8 @@ module.exports = env =>
     output: {
       path: config.outputPath,
       publicPath: config.publicPath,
-      filename: '[name].[chunkhash:' + hashLength + '].js',
-      chunkFilename: '[name].app.[chunkhash:' + hashLength + '].js',
+      filename: '[name].[chunkhash:' + HASH_LENGTH + '].js',
+      chunkFilename: '[name].app.[chunkhash:' + HASH_LENGTH + '].js',
     },
     module: {
       rules: [
@@ -57,15 +59,16 @@ module.exports = env =>
         { test: /\.hbs/, loader: 'handlebars-template-loader' },
       ],
     },
-    devtool: 'true', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
+    devtool: 'source-map', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
     plugins: [
+      new webpack.HashedModuleIdsPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new V8LazyParseWebpackPlugin(),
       new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
         append: '\n//# sourceMappingURL=' + config.rootDomain + '/dist/[url]',
       }),
-      new ExtractTextPlugin('app.[contenthash:' + hashLength + '].css'),
+      new ExtractTextPlugin('app.[contenthash:' + HASH_LENGTH + '].css'),
       // Compress extracted CSS. We are using this plugin so that possible
       // duplicated CSS from different components can be deduped.
       new OptimizeCSSPlugin({
@@ -75,7 +78,7 @@ module.exports = env =>
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: 'vendor.[chunkhash:' + hashLength + '].js',
+        filename: 'vendor.[chunkhash:' + HASH_LENGTH + '].js',
       }),
       // Separate webpack runtime from vendor. This stop vendor chunk from changing
       // whenever the webpack runtime changes. (webpack runtime will change on every build)
@@ -85,6 +88,7 @@ module.exports = env =>
         chunks: ['vendor'],
         filename: 'manifest.js',
       }),
+      new webpack.optimize.AggressiveMergingPlugin(),
       // strip out babel-helper invariant checks
       new ReplacePlugin({
         include: /babel-helper$/,
@@ -104,7 +108,6 @@ module.exports = env =>
             pure_getters: true,
             collapse_vars: true,
             warnings: false,
-            screw_ie8: true,
             sequences: true,
             dead_code: true,
             drop_debugger: true,
@@ -149,8 +152,8 @@ module.exports = env =>
       }),
     ].concat(env.bundleStats ? [new BundleAnalyzerPlugin()] : []),
     performance: {
-      maxAssetSize: 100000,
-      maxEntrypointSize: 200000,
+      maxAssetSize: MAX_ASSET_SIZE_IN_BYTE,
+      maxEntrypointSize: MAX_ENTRY_SIZE_IN_BYTE,
       hints: 'warning',
     },
     bail: true,

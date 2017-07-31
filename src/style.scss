@@ -1,11 +1,15 @@
 html {
   background: white;
   color: #aaa;
+  display: flex;
+  vertical-align: center;
 }
 
+// a comment
 a,
 span {
   color: red;
+  padding: 4px;
 
   &__b {
     color: blue;
