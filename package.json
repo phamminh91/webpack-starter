@@ -8,13 +8,15 @@
     "start": "npm run build:dll && DEBUG=true node server.js",
     "build": "webpack --env.env=production --config ./build/webpack.config.js",
     "build:dll": "webpack --progress --config ./build/webpack.config.js",
-    "build:stat": "webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
+    "build:stat":
+      "webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
     "lint:css": "stylelint src/**/*.scss --fix",
     "lint:js": "eslint --ext .js,.jsx src/",
     "lint:js-stat": "eslint-nibble --ext .jsx,.js src/",
     "lint:svg": "/bin/bash ./build/svglinter/svg_lint.sh",
     "svg:clean": "/bin/bash ./build/svglinter/clean_svg_all.sh",
-    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
+    "prettier":
+      "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
     "precommit": "lint-staged"
   },
   "author": "",
