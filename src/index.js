@@ -1,11 +1,11 @@
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+import 'normalize-css/normalize.css';
+import './style.scss';
 
 // Set up Service worker
 if ('serviceWorker' in navigator) {
   runtime.register();
 }
-
-import './style.scss';
 
 const a = 1;
 const b = 2;

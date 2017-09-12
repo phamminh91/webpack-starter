@@ -4,13 +4,9 @@ const webpackMerge = require('webpack-merge');
 const baseConfig = require('./config.base');
 const config = require('./constant');
 const util = require('./util');
-const projectDir = config.projectDir;
-
-/** plugins **/
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
@@ -20,6 +16,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ReplacePlugin = require('webpack-plugin-replace');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
+const projectDir = config.projectDir;
 const vendorDeps = util.getVendorDependencies();
 const HASH_LENGTH = 6;
 const MAX_ASSET_SIZE_IN_BYTE = 100000;
@@ -45,7 +42,7 @@ module.exports = env =>
                 loader: 'css-loader',
                 options: {
                   sourceMap: true,
-                  minimize: true,
+                  minimize: { discardComments: { removeAll: true } },
                 },
               },
               {
