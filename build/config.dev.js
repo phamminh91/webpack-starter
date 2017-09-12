@@ -50,6 +50,7 @@ module.exports = () => {
         loaders: [
           'style-loader',
           'css-loader',
+          'sprite-loader',
           {
             loader: 'postcss-loader',
             options: {
@@ -71,6 +72,7 @@ module.exports = () => {
         excludes: ['**/.*', '**/*.map', '../index.html'],
         publicPath: config.publicPath,
       }),
+      config.webpackPwaManifest,
     ],
   });
 };

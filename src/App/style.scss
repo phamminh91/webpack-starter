@@ -1,0 +1,26 @@
+/* sprite-loader-enable */
+html {
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-icon {
+  background: url("../assets/app-icon.png");
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.lightning-icon {
+  background: url("../assets/lightning-icon.png");
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+}

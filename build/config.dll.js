@@ -10,7 +10,7 @@ module.exports = () => ({
     vendor:
       vendorDeps.length > 0
         ? vendorDeps
-        : [path.resolve(__dirname, 'dummyEntry.js')],
+        : [path.resolve(__dirname, 'dummy.js')],
   },
   output: {
     filename: 'vendor.js',

@@ -15,11 +15,10 @@ const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ReplacePlugin = require('webpack-plugin-replace');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
-const WebpackPwaManifestPlugin = require('webpack-pwa-manifest');
 
 const projectDir = config.projectDir;
 const vendorDeps = util.getVendorDependencies();
-const HASH_LENGTH = 6;
+const HASH_LENGTH = config.hashLength;
 const MAX_ASSET_SIZE_IN_BYTE = 100000;
 const MAX_ENTRY_SIZE_IN_BYTE = 200000;
 
@@ -46,6 +45,7 @@ module.exports = env =>
                   minimize: { discardComments: { removeAll: true } },
                 },
               },
+              'sprite-loader',
               {
                 loader: 'postcss-loader',
                 options: {
@@ -150,7 +150,7 @@ module.exports = env =>
       new InlineManifestWebpackPlugin({
         name: 'webpackManifest',
       }),
-      WebpackPwaManifest,
+      config.webpackPwaManifest,
       new ServiceWorkerWebpackPlugin({
         entry: path.join(projectDir, 'src', 'sw.js'),
         publicPath: '/',
@@ -165,26 +165,3 @@ module.exports = env =>
     bail: true,
     recordsPath: path.resolve(projectDir, '.webpack-path-record'),
   });
-
-const WebpackPwaManifest = new WebpackPwaManifestPlugin({
-  publicPath: '/', // must be on same origin as live, not CDN
-  // Adapted from https://git.garena.com/core-services/beeshop_web/blob/master/mall/templates/home/manifest.json.html
-  name: 'My PWA',
-  short_name: 'My PWA',
-  description: 'My PWA App',
-  start_url: '/',
-  display: 'standalone',
-  background_color: '#ededed',
-  theme_color: '#FF5722',
-  prefer_related_applications: true,
-  icons: [
-    {
-      src: path.resolve('src/assets/app-icon.png'),
-      sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
-    },
-    {
-      src: path.resolve('src/assets/app-icon.png'),
-      size: '1024x1024', // you can also use the specifications pattern
-    },
-  ],
-});

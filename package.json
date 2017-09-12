@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build:dll && DEBUG=true node server.js",
-    "build": "webpack --env.env=production --config ./build/webpack.config.js",
+    "build": "NODE_ENV=production webpack --env.env=production --config ./build/webpack.config.js",
     "build:dll": "webpack --progress --config ./build/webpack.config.js",
-    "build:stat": "webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
+    "build:stat": "NODE_ENV=production webpack --env.env=production --env.bundleStats=true --config ./build/webpack.config.js",
     "lint:css": "stylelint src/**/*.scss --fix",
     "lint:js": "eslint --ext .js,.jsx src/",
     "lint:js-stat": "eslint-nibble --ext .jsx,.js src/",
@@ -27,7 +27,9 @@
     "redux": "^3.7.2",
     "unfetch": "^3.0.0"
   },
-  "ignoreFromVendor": [],
+  "ignoreFromVendor": [
+    "preact-redux"
+  ],
   "devDependencies": {
     "autoprefixer": "^7.1.3",
     "babel-core": "^6.26.0",
@@ -65,12 +67,13 @@
     "happypack": "^4.0.0-beta.5",
     "html-webpack-plugin": "^2.30.1",
     "husky": "^0.14.3",
+    "img-loader": "^2.0.0",
     "inline-manifest-webpack-plugin": "^3.0.1",
     "jest": "^20.0.4",
     "json-loader": "^0.5.7",
     "lint-staged": "^4.0.4",
     "node-sass": "^4.5.3",
-    "normalize-css": "^2.3.1",
+    "normalize.css": "^7.0.0",
     "optimize-css-assets-webpack-plugin": "^3.1.1",
     "postcss": "^6.0.10",
     "postcss-cssnext": "^3.0.2",
@@ -82,6 +85,7 @@
     "react-router-dom": "^4.2.2",
     "sass-loader": "^6.0.6",
     "serviceworker-webpack-plugin": "^0.2.3",
+    "sprite-loader": "^0.3.7",
     "style-loader": "^0.18.2",
     "stylelint": "^8.0.0",
     "stylelint-config-standard": "^17.0.0",

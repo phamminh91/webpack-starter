@@ -21,7 +21,35 @@ module.exports = {
       },
       {
         test: [/\.(png|jpg|gif|woff|woff2|eot|ttf)/],
-        use: 'file-loader',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              hashes: 'md5:hash:base64:' + config.hashLength,
+            },
+          },
+          {
+            loader: 'img-loader',
+            options: {
+              enabled: process.env.NODE_ENV === 'production',
+              gifsicle: {
+                interlaced: false,
+              },
+              mozjpeg: {
+                progressive: true,
+                arithmetic: false,
+              },
+              optipng: false, // disabled
+              pngquant: {
+                floyd: 0.5,
+                speed: 2,
+              },
+              svgo: {
+                plugins: [{ removeTitle: true }, { convertPathData: false }],
+              },
+            },
+          },
+        ],
         include: [path.resolve(projectDir, 'src')],
       },
     ],
