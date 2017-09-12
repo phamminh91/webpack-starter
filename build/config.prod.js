@@ -4,6 +4,7 @@ const webpackMerge = require('webpack-merge');
 const baseConfig = require('./config.base');
 const config = require('./constant');
 const util = require('./util');
+const projectDir = config.projectDir;
 
 /** plugins **/
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
@@ -17,6 +18,7 @@ const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ReplacePlugin = require('webpack-plugin-replace');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 const vendorDeps = util.getVendorDependencies();
 const HASH_LENGTH = 6;
@@ -150,6 +152,11 @@ module.exports = env =>
       new InlineManifestWebpackPlugin({
         name: 'webpackManifest',
       }),
+      new ServiceWorkerWebpackPlugin({
+        entry: path.join(projectDir, 'src', 'sw.js'),
+        publicPath: '/',
+        filename: 'sw.js',
+      }),
     ].concat(env.bundleStats ? [new BundleAnalyzerPlugin()] : []),
     performance: {
       maxAssetSize: MAX_ASSET_SIZE_IN_BYTE,
@@ -157,5 +164,5 @@ module.exports = env =>
       hints: 'warning',
     },
     bail: true,
-    recordsPath: path.resolve(__dirname, '..', '.webpack-path-record'),
+    recordsPath: path.resolve(projectDir, '.webpack-path-record'),
   });

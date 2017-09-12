@@ -5,6 +5,8 @@ const HappyPackPlugin = require('happypack');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const baseConfig = require('./config.base');
 const config = require('./constant');
+const projectDir = config.projectDir;
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 module.exports = () => {
   return webpackMerge.smart(baseConfig, {
@@ -33,7 +35,7 @@ module.exports = () => {
 
     // we assume developer use Chrome in dev mode which has good support for
     // ES6 syntax hence there's no need for babel transpilation
-    // devtool: 'source-map',
+    devtool: 'source-map',
 
     module: {
       rules: [{ test: /\.s?css$/, use: 'happypack/loader?id=style' }],
@@ -63,6 +65,11 @@ module.exports = () => {
           config.outputPath,
           'vendor.manifest.json'
         )),
+      }),
+      new ServiceWorkerWebpackPlugin({
+        entry: path.join(projectDir, 'src', 'sw.js'),
+        excludes: ['**/.*', '**/*.map', '../index.html'],
+        publicPath: config.publicPath,
       }),
     ],
   });

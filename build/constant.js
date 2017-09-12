@@ -11,5 +11,5 @@ module.exports = {
     BUILD_STAT: 'build:stat',
   },
   projectDir: path.resolve(__dirname, '..'),
-  webpackDevServerPort: 3018,
+  webpackDevServerPort: 4000,
 };
