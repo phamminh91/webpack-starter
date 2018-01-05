@@ -1,4 +1,3 @@
-/* sprite-loader-enable */
 html {
   color: #000;
   -webkit-font-smoothing: antialiased;
@@ -12,14 +11,14 @@ html {
 }
 
 .app-icon {
-  background: url("../assets/app-icon.png");
+  background: url('../assets/app-icon.png');
   width: 100px;
   height: 100px;
   margin-bottom: 20px;
 }
 
 .lightning-icon {
-  background: url("../assets/lightning-icon.png");
+  background: url('../assets/lightning-icon.png');
   width: 100px;
   height: 100px;
   background-size: cover;

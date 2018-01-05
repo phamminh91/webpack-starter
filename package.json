@@ -14,7 +14,7 @@
     "lint:js-stat": "eslint-nibble --ext .jsx,.js src/",
     "lint:svg": "/bin/bash ./build/svglinter/svg_lint.sh",
     "svg:clean": "/bin/bash ./build/svglinter/clean_svg_all.sh",
-    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma all './src/**/*.{js,jsx,json}'",
+    "prettier": "node ./node_modules/prettier/bin/prettier.js --write --single-quote --trailing-comma es5 './src/**/*.{js,jsx,json}'",
     "precommit": "lint-staged"
   },
   "author": "",
@@ -23,9 +23,7 @@
     "preact": "^8.2.7",
     "unfetch": "^3.0.0"
   },
-  "ignoreFromVendor": [
-    "preact-redux"
-  ],
+  "ignoreFromVendor": [],
   "devDependencies": {
     "autoprefixer": "^7.2.4",
     "babel-core": "^6.26.0",
@@ -86,9 +84,9 @@
     "v8-lazy-parse-webpack-plugin": "^0.3.0",
     "webpack": "^3.5.5",
     "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-closure-compiler": "^2.1.6",
     "webpack-dev-server": "^2.7.1",
     "webpack-merge": "^4.1.0",
-    "webpack-parallel-uglify-plugin": "^1.0.0",
     "webpack-plugin-replace": "^1.1.1",
     "webpack-pwa-manifest": "^3.2.0"
   },

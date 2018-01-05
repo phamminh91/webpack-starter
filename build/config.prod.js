@@ -10,11 +10,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
-const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ReplacePlugin = require('webpack-plugin-replace');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const ClosureCompilerPlugin = require('webpack-closure-compiler');
 
 const projectDir = config.projectDir;
 const vendorDeps = util.getVendorDependencies();
@@ -45,7 +45,6 @@ module.exports = env =>
                   minimize: { discardComments: { removeAll: true } },
                 },
               },
-              'sprite-loader',
               {
                 loader: 'postcss-loader',
                 options: {
@@ -61,8 +60,8 @@ module.exports = env =>
     },
     devtool: 'source-map', // this is to patch ParallelUglifyPlugin as it expects a `devtool` option explicitly but doesn't care what it is
     plugins: [
-      new webpack.HashedModuleIdsPlugin(),
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      // new webpack.HashedModuleIdsPlugin(),
+      // new webpack.optimize.ModuleConcatenationPlugin(),
       new V8LazyParseWebpackPlugin(),
       new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
@@ -99,34 +98,14 @@ module.exports = env =>
           },
         ],
       }),
-      new ParallelUglifyPlugin({
-        uglifyJS: {
-          mangle: true,
-          compress: {
-            properties: true,
-            keep_fargs: false,
-            pure_getters: true,
-            collapse_vars: true,
-            warnings: false,
-            sequences: true,
-            dead_code: true,
-            drop_debugger: true,
-            comparisons: true,
-            conditionals: true,
-            evaluate: true,
-            booleans: true,
-            loops: true,
-            unused: true,
-            hoist_funs: true,
-            if_return: true,
-            join_vars: true,
-            cascade: true,
-            drop_console: true,
-          },
-          output: {
-            comments: false,
-          },
+      new ClosureCompilerPlugin({
+        compiler: {
+          jar: path.resolve(__dirname, './google-closure.jar'),
+          language_in: 'ECMASCRIPT5',
+          language_out: 'ECMASCRIPT5',
+          compilation_level: 'SIMPLE',
         },
+        concurrency: 3,
       }),
       new CleanWebpackPlugin([config.outputPath], {
         root: path.resolve('..'),

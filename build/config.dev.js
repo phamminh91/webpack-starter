@@ -50,7 +50,6 @@ module.exports = () => {
         loaders: [
           'style-loader',
           'css-loader',
-          'sprite-loader',
           {
             loader: 'postcss-loader',
             options: {

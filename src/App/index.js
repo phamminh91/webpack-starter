@@ -5,10 +5,10 @@ import './style.scss';
 
 export default function App() {
   return (
-    <div className='container'>
+    <div className="container">
       <h2>Img sprite</h2>
-      <div className='app-icon' />
-      <div className='lightning-icon' />
+      <div className="app-icon" />
+      <div className="lightning-icon" />
     </div>
   );
 }
